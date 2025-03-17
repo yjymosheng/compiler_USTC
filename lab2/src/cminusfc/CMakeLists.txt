@@ -1,3 +1,4 @@
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 add_executable(
     cminusfc
     cminusfc.cpp

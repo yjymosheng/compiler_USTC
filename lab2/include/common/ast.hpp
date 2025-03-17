@@ -86,13 +86,15 @@ struct ASTNode {
     virtual Value *accept(ASTVisitor &) = 0;
     virtual ~ASTNode() = default;
 };
-
+//根节点, 保存所有的声明节点
 struct ASTProgram : ASTNode {
     virtual Value *accept(ASTVisitor &) override final;
     virtual ~ASTProgram() = default;
+    // 就是把token解析成多个declaration 罢了
     std::vector<std::shared_ptr<ASTDeclaration>> declarations;
 };
 
+// 保存 type + id ,做基类
 struct ASTDeclaration : ASTNode {
     virtual ~ASTDeclaration() = default;
     CminusType type;
@@ -103,6 +105,7 @@ struct ASTFactor : ASTNode {
     virtual ~ASTFactor() = default;
 };
 
+// 数字的类型+ 数值
 struct ASTNum : ASTFactor {
     virtual Value *accept(ASTVisitor &) override final;
     CminusType type;
@@ -112,11 +115,13 @@ struct ASTNum : ASTFactor {
     };
 };
 
+// 变量声明节点 , 里面保存一个,数字?疑似是数组长度
 struct ASTVarDeclaration : ASTDeclaration {
     virtual Value *accept(ASTVisitor &) override final;
     std::shared_ptr<ASTNum> num;
 };
 
+//函数声明节点 , 保留一个参数列表, 以及后续的compound-stmt
 struct ASTFunDeclaration : ASTDeclaration {
     virtual Value *accept(ASTVisitor &) override final;
     std::vector<std::shared_ptr<ASTParam>> params;
@@ -134,7 +139,7 @@ struct ASTParam : ASTNode {
 struct ASTStatement : ASTNode {
     virtual ~ASTStatement() = default;
 };
-
+// 语法规则的有关statement 的5种情况.复合语句, 选择,循环, 返回, 普通表达式
 struct ASTCompoundStmt : ASTStatement {
     virtual Value *accept(ASTVisitor &) override final;
     std::vector<std::shared_ptr<ASTVarDeclaration>> local_declarations;
@@ -185,6 +190,7 @@ struct ASTVar : ASTFactor {
     virtual Value *accept(ASTVisitor &) override final;
     std::string id;
     // nullptr if var is of int type
+    //数组index
     std::shared_ptr<ASTExpression> expression;
 };
 

@@ -11,10 +11,20 @@ build_docker:
 clean_docker:
 	@docker rmi $(DOCKER_NAME)
 
+getown:
+	@sudo chown mosheng:mosheng -R .
+
+git:
+	@git add ./*/src/*
+	@git commit -m "update"
+	@git push origin main
+
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... docker LAB=lab{x}   LAB?=lab1"
 	@echo "... build_docker"
 	@echo "... clean_docker"
+	@echo "... getown"
+	@echo "... git"
 
-.PHONY: docker build_docker clean_docker help
+.PHONY: docker build_docker clean_docker help git

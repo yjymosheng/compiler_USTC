@@ -1,11 +1,13 @@
 #include "calc_builder.hpp"
 #include <memory>
 std::unique_ptr<Module> CalcBuilder::build(CalcAST &ast) {
+  //创建自己这个类的module , builder
     module = std::unique_ptr<Module>(new Module());
     builder = std::make_unique<IRBuilder>(nullptr, module.get());
+
+//    获得一个空类型 ,一个int32 类型
     auto TyVoid = module->get_void_type();
     TyInt32 = module->get_int32_type();
-
     std::vector<Type *> output_params;
     output_params.push_back(TyInt32);
     auto output_type = FunctionType::get(TyVoid, output_params);

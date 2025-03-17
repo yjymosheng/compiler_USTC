@@ -1,6 +1,6 @@
 #include "Module.hpp"
 #include "cminusf_builder.hpp"
-
+#include "syntax_tree.h"
 #include <filesystem>
 #include <fstream>
 #include <memory>
@@ -33,12 +33,15 @@ struct Config {
 };
 
 int main(int argc, char **argv) {
+  	// 首先创建一个config ,将接收的命令行参数传入
     Config config(argc, argv);
 
     std::unique_ptr<Module> m;
     {
         auto syntax_tree = parse(config.input_file.c_str());
+//        print_syntax_tree(stderr, syntax_tree);
         auto ast = AST(syntax_tree);
+
         CminusfBuilder builder;
         ast.run_visitor(builder);
         m = builder.getModule();
