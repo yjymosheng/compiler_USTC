@@ -25,6 +25,7 @@ class Scope {
     // return true if successful
     // return false if this name already exits
     bool push(const std::string& name, Value *val) {
+//      	std::cerr << "push " << name << val -> get_type()->print() << std::endl;
         auto result = inner[inner.size() - 1].insert({name, val});
         return result.second;
     }
@@ -33,6 +34,7 @@ class Scope {
         for (auto s = inner.rbegin(); s != inner.rend(); s++) {
             auto iter = s->find(name);
             if (iter != s->end()) {
+//              	std::cerr << "find " << name << iter->second-> get_type()->print() << std::endl;
                 return iter->second;
             }
         }
@@ -109,9 +111,13 @@ class CminusfBuilder : public ASTVisitor {
         // function that is being built
         Function *func = nullptr;
         // TODO: you should add more fields to store state
-        Value * valvalue = nullptr;
-        CminusType valtype = TYPE_VOID;
-        int valint =0 ;
-        float valfloat =0.0 ;
+//        union {
+//        int i_val;
+//        float f_val;
+//    	} ;
+    	double return_val;
+        bool need_return_val;
+        bool in_iteration =false;
+        unsigned int counter = 0;
     } context;
 };
