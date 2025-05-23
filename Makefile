@@ -1,4 +1,4 @@
-LAB   ?= lab2
+LAB   ?= lab3
 DIR := /home/mosheng/code/compiler_USTC
 DOCKER_NAME=compiler
 
